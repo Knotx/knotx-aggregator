@@ -40,7 +40,7 @@ help() {
     echo
     echo "   -r                         root folder path for all cloned repositories"
     echo "   -b                         GIT branch name"
-    echo "   -c                         create GIT branch if not exists"
+    echo "   -c                         create GIT branch if not exists and sets the tracking"
     echo "   -f                         reset all changes if repository is cloned"
     echo "   -m                         merge / rebase with branch '-m original/master'"
     echo
@@ -92,6 +92,7 @@ checkout() {
         git --git-dir=$2/.git --work-tree=$2 rebase $MERGE
         git --git-dir=$2/.git --work-tree=$2 push
       fi
+      git --git-dir=$2/.git --work-tree=$2 branch --set-upstream-to=origin/$BRANCH $BRANCH
     fi
   fi
   git --git-dir=$2/.git --work-tree=$2 pull
