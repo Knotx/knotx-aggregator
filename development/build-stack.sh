@@ -1,16 +1,5 @@
 #!/usr/bin/env bash
 
-while getopts hr:di option
-do
-  case "${option}"
-    in
-    h) help;;
-    r) ROOT=${OPTARG};;
-    d) DEPLOY=true;;
-    i) DOCKER_IMAGE=true;;
-  esac
-done
-
 #########################
 # The command line help #
 #########################
@@ -80,6 +69,20 @@ build_docker_with_maven () {
   mvn -f $1/pom.xml clean package; fail_fast_build $? $1
 }
 
+#########################
+#         Main          #
+#########################
+
+while getopts hr:di option
+do
+  case "${option}"
+    in
+    h) help;;
+    r) ROOT=${OPTARG};;
+    d) DEPLOY=true;;
+    i) DOCKER_IMAGE=true;;
+  esac
+done
 
 #########################
 #       Execute         #

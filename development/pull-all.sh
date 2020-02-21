@@ -4,34 +4,6 @@
 # eval `ssh-agent`
 # ssh-add ~/.ssh/id_rsa
 
-while getopts hr:b:fcm:a option
-do
-  case "${option}"
-    in
-    h) help;;
-    r) ROOT=${OPTARG};;
-    b) BRANCH=${OPTARG};;
-    f) FORCE=true;;
-    c) CREATE=true;;
-    m) MERGE=${OPTARG};;
-    a) HTTPS=true;;
-  esac
-done
-
-echo "Script root catalogue [$ROOT]"
-echo "GIT branch name [$BRANCH]"
-
-if [[ $FORCE ]]; then
-  while true; do
-    read -p "Do you wish to RESET all changes in all repositories to HEAD and switch to [$BRANCH] [yes/no]? " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) echo "Script NOT executed!"; exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-  done
-fi
-
 #########################
 # The command line help #
 #########################
@@ -43,6 +15,7 @@ help() {
     echo "   -c                         create GIT branch if not exists and sets the tracking"
     echo "   -f                         reset all changes if repository is cloned"
     echo "   -m                         merge / rebase with branch '-m original/master'"
+    echo "   -a                         clone with HTTPS instead of clone with SSH (defult)"
     echo
     echo "Examples:"
     echo "   sh pull-all.sh -r projects/knotx -b master                                   clones (if not exists) all repositories to 'projects/knotx' folder and switches to master branch"
@@ -97,6 +70,38 @@ checkout() {
   fi
   git --git-dir=$2/.git --work-tree=$2 pull
 }
+
+#########################
+#          Main         #
+#########################
+
+while getopts hr:b:fcm:a option
+do
+  case "${option}"
+    in
+    h) help;;
+    r) ROOT=${OPTARG};;
+    b) BRANCH=${OPTARG};;
+    f) FORCE=true;;
+    c) CREATE=true;;
+    m) MERGE=${OPTARG};;
+    a) HTTPS=true;;
+  esac
+done
+
+echo "Script root catalogue [$ROOT]"
+echo "GIT branch name [$BRANCH]"
+
+if [[ $FORCE ]]; then
+  while true; do
+    read -p "Do you wish to RESET all changes in all repositories to HEAD and switch to [$BRANCH] [yes/no]? " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) echo "Script NOT executed!"; exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+  done
+fi
 
 #########################
 #       Execute         #
