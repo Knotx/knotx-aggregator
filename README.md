@@ -69,6 +69,12 @@ After a successful build, you should have `knotx/knotx:X.X.X-SNAPSHOT` image in 
 Check it running `docker images knotx/knotx` (note `X.X.X-SNAPSHOT` should correspond to the current SNAPSHOT version of Knot.x Stack).
 
 ### Build Starter-Kit
+To build [Knot.x Starter-Kit](https://github.com/Knotx/knotx-starter-kit) run `build-stack.sh` with `-s` flag.
+
+```bash
+./build-stack.sh -r ../../ -s
+```
+
 There are 2 distributions that `Knot.x Starter-Kit` builds:
 - `ZIP`,
 - `Docker image`.
