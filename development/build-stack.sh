@@ -7,11 +7,11 @@ help() {
     echo "Usage: $0 [option...] " >&2
     echo
     echo "   -r                         root folder with cloned repositories"
-    echo "   -d                         deploy to maven central snapshots"
-    echo "   -i                         also builds knotx base docker image"
+    echo "   -i                         build base docker image"
+    echo "   -s                         build starter kit project"
     echo
     echo "Examples:"
-    echo "   sh build-stack.sh -r projects/knotx -d                           rebuild all repositories defined in ../repositories.cfg and deploy artifacts to maven snapshot"
+    echo "   sh build-stack.sh -r projects/knotx -i -s                        rebuild all repositories defined in ../repositories.cfg and deploy artifacts to maven local repository, rebuild docker image, rebuild starter kit project"
     exit 1
 }
 
@@ -23,34 +23,21 @@ fail_fast_build () {
 }
 
 ############################
-#       Maven build        #
-############################
-build_with_maven () {
-  # S1 root folder
-  # $2 deploy
-  echo "***************************************"
-  echo "* Building [$1] using maven with deploy [$2]"
-  echo "***************************************"
-  if [[ $2 ]]; then
-    mvn -f $1/pom.xml clean install deploy; fail_fast_build $? $1
-  else
-    mvn -f $1/pom.xml clean install; fail_fast_build $? $1
-  fi
-}
-
-############################
 #      Gradle build        #
 ############################
-build_composite_with_gradle () {
+build() {
+  # $1 root folder
+  echo "***************************************"
+  echo "* Building [$1]"
+  echo "***************************************"
+  $1/gradlew -p $1 clean build --rerun-tasks; fail_fast_build $? $1
+}
+
+publish() {
   # $1 root folder
   # $2 deploy
   echo "***************************************"
-  echo "* Building [$1] using gradle with deploy [$2]"
-  echo "***************************************"
-  $1/gradlew -p $1 clean build --rerun-tasks; fail_fast_build $? $1
-
-  echo "***************************************"
-  echo "* Publishing [$1]"
+  echo "* Publishing [$1][$2]"
   echo "***************************************"
   if [[ $2 ]]; then
     $1/gradlew -p $1 publish-all; fail_fast_build $? $1
@@ -59,28 +46,18 @@ build_composite_with_gradle () {
   fi
 }
 
-############################
-#       Build docker       #
-############################
-build_docker_with_maven () {
-  echo "***************************************"
-  echo "* Building [$1] using maven"
-  echo "***************************************"
-  mvn -f $1/pom.xml clean package; fail_fast_build $? $1
-}
-
 #########################
 #         Main          #
 #########################
 
-while getopts hr:di option
+while getopts hr:is option
 do
   case "${option}"
     in
     h) help;;
     r) ROOT=${OPTARG};;
-    d) DEPLOY=true;;
     i) DOCKER_IMAGE=true;;
+    s) STARTER_KIT=true;;
   esac
 done
 
@@ -90,11 +67,17 @@ done
 cd ${ROOT}
 touch ${ROOT}/knotx-stack/.composite-enabled
 
+build knotx-gradle-plugins
 knotx-gradle-plugins/gradlew -p knotx-gradle-plugins publishToMavenLocal; fail_fast_build $? true
-build_composite_with_gradle `echo "knotx-stack" | cut -d';' -f2` $DEPLOY
+build knotx-stack
+publish knotx-stack $DEPLOY
 
 if [[ $DOCKER_IMAGE ]]; then
-  build_docker_with_maven `echo "knotx-docker"`
+  build knotx-docker
+fi
+
+if [[ $STARTER_KIT ]]; then
+  build knotx-starter-kit
 fi
 
 echo "Finished!"
