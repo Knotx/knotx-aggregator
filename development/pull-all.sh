@@ -46,17 +46,22 @@ checkout() {
     fi
     git --git-dir=$GITHUB_REPO/.git --work-tree=$GITHUB_REPO fetch
   else
-
-    status="$(curl -s --head -w %{http_code} "https://github.com/$GITHUB_ORG/$GITHUB_REPO" -o /dev/null)"
-    if [ $status != "200" ]; then
-      echo "Can't access https://github.com/$GITHUB_ORG/$GITHUB_REPO, will clone https://github.com/$DEFAULT_ORG/$GITHUB_REPO instead"
-      GITHUB_ORG=$DEFAULT_ORG
+    repo_url=""
+    fallback_repo_url=""
+    if [[ $HTTPS ]]; then
+      repo_url="https://github.com/$GITHUB_ORG/$GITHUB_REPO.git"
+      fallback_repo_url="https://github.com/$DEFAULT_ORG/$GITHUB_REPO.git"
+    else
+      repo_url="git@github.com:$GITHUB_ORG/$GITHUB_REPO.git"
+      fallback_repo_url="git@github.com:$DEFAULT_ORG/$GITHUB_REPO.git"
     fi
 
-    if [[ $HTTPS ]]; then
-      git clone "https://github.com/$GITHUB_ORG/$GITHUB_REPO.git"
-    else
-      git clone "git@github.com:$GITHUB_ORG/$GITHUB_REPO.git"
+    git clone $repo_url
+    ret=$?
+    if ! test "$ret" -eq 0
+    then
+        echo >&2 "Failed to clone $repo_url (exit status: $ret), clonning $fallback_repo_url instead"
+        git clone $fallback_repo_url
     fi
   fi
 
