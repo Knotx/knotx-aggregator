@@ -1,15 +1,12 @@
-# Generated files #
+# Project specific   #
+######################
+.vertx
+file-uploads
+.composite-enabled
+
+# Compiled source #
 ###################
-node_modules
-node
-target-grunt
-.sass-cache
-.grunt
-C:
-.project
-.classpath
-.settings
-generated
+*.class
 
 # Packages #
 ############
@@ -24,7 +21,7 @@ generated
 *.tar
 *.zip
 
-# Logs
+# Logs               #
 ######################
 *.log
 
@@ -42,11 +39,13 @@ Thumbs.db
 # Intellij           #
 ######################
 .idea
+**/build/
+**/out/
 
-# Netbeans           #
+# Gradle             #
 ######################
-nb-configuration.xml
-nbactions.xml
+.gradle
+!gradle-wrapper.jar
 
 # Other              #
 ######################
@@ -54,16 +53,3 @@ nbactions.xml
 *.iws
 *.ipr
 *.vlt
-*.vertx
-
-target
-atlassian-ide-plugin.xml
-*.bak
-
-knotx-repos/
-
-# Gradle             #
-######################
-.gradle
-!gradle-wrapper.jar
-**/build/
