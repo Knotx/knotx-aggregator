@@ -42,18 +42,18 @@ org.gradle.internal.http.socketTimeout=300000
     
     or to save results to log:
     
-    `./gradlew release -PreleaseVersion=2.0.0 -PnextVersion=2.1.0-SNAPSHOT -Pbranch=master 2>&1 | tee ./release.log`
+    `./gradlew release -PreleaseVersion=2.2.0-RC1 -PnextVersion=2.2.1-SNAPSHOT -Pbranch=master 2>&1 | tee ./release.$(date "+%Y.%m.%d-%H.%M.%S").log`
     
     That will run following phases in that order:
     - `prepare`
-    - `publilsh`
+    - `publish`
     - `close`
     
     Properties:
     - `releaseVersion` - sets the desired release version,
     - `nextVersion` - sets the next development version (will be set at the `close` phase),
     - `branch` - the branch that will be used as a release base for all repos,
-    - `dryRun` - if set to `true` nothing will be saved (all changes will be done only locally).
+    - `dryRun` - if set to `true` nothing will be saved (all changes will be done only locally), default is `false`
 
 2. Promote manually artifacts to maven central repo using https://oss.sonatype.org/.
 

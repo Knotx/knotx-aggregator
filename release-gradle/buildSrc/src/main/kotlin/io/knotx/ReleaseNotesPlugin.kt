@@ -10,9 +10,9 @@ class ReleaseNotesPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             tasks {
-//                register<AggregateChangelogsTask>("aggregateChanges") {
-//                    group = "release prepare"
-//                }
+                register<AggregateChangelogsTask>("aggregateChanges") {
+                    group = "release prepare"
+                }
             }
         }
     }

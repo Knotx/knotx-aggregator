@@ -9,6 +9,7 @@ val DRY_RUN = project.findProperty("dryRun")?.toString()?.toBoolean() ?: false
 
 val WEBSITE = "Knotx/knotx-website"
 val TO_RELEASE = setOf(
+        "Knotx/knotx-gradle-plugins",
         "Knotx/knotx-dependencies",
         "Knotx/knotx-commons",
         "Knotx/knotx-launcher",
@@ -28,7 +29,7 @@ tasks {
      * PREPARE
      */
 
-    register("setup") {
+    register("clean") {
         group = "prepare"
         doFirst {
             justLog("INFO", "root", "Cleaning $buildDir")
@@ -39,7 +40,7 @@ tasks {
 
     register("cloneProjects") {
         group = "prepare"
-        dependsOn("setup")
+        dependsOn("clean")
         doLast {
             TO_RELEASE.forEach { repo ->
                 justLog("INFO", project.buildDir.path, "cloning $repo")
@@ -63,7 +64,7 @@ tasks {
         dependsOn("cloneProjects")
         doLast {
             TO_RELEASE.forEach { repo ->
-                execOnRepo(repo, "sh gradlew prepare -Pversion=${VERSION} -Pknotx.version=${VERSION} --rerun-tasks")
+                execOnRepo(repo, "sh gradlew prepare -Pversion=${VERSION} -PknotxVersion=${VERSION} --rerun-tasks")
             }
         }
     }
@@ -89,7 +90,11 @@ tasks {
         group = "close release"
         doLast {
             TO_RELEASE.forEach { repo ->
-                execOnRepo(repo, "sh gradlew setVersion -Pversion=${NEXT_VERSION} -Pknotx.version=${NEXT_VERSION}")
+                execOnRepo(repo, "sh gradlew setVersion -Pversion=${NEXT_VERSION} -PknotxVersion=${NEXT_VERSION}")
+                if (repo.contains("knotx-gradle-plugins")) {
+                    justLog("INFO", repo, "publishing locally ${NEXT_VERSION} to satisfy dependencies")
+                    execOnRepo(repo, "sh gradlew publishToMavenLocal")
+                }
                 execOnRepo(repo, "git add -A")
                 execOnRepo(repo, listOf("git", "commit", "-m", "Setting next development version to ${NEXT_VERSION}"))
             }
@@ -129,8 +134,7 @@ tasks {
         }
     }
 
-    register<io.knotx.AggregateChangelogsTask>("aggregateChanges") {
-        group = "release notes"
+    named<io.knotx.AggregateChangelogsTask>("aggregateChanges") {
         repositories = TO_RELEASE.map { s -> s.substringAfter("/") }
         version = VERSION
         dependsOn("cloneWebsiteRepo")
