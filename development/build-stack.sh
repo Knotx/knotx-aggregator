@@ -67,8 +67,6 @@ done
 cd ${ROOT}
 touch ${ROOT}/knotx-stack/.composite-enabled
 
-build knotx-gradle-plugins
-knotx-gradle-plugins/gradlew -p knotx-gradle-plugins publishToMavenLocal; fail_fast_build $? true
 build knotx-stack
 publish knotx-stack $DEPLOY
 
