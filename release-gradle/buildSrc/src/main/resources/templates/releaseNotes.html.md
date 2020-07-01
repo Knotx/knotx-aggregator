@@ -1,15 +1,15 @@
 ---
-title: Knot.x {{shortVersion}} released!
-description: We have just released a minor release Knot.x {{version}}.
-author: admin
+title: Knot.x {{version}} released!
+description: We have just released a {{releaseType}} release Knot.x {{version}}.
 keywords: release
 order: 1
 date: {{ releaseDate | date("yyyy-MM-dd") }}
 knotxVersions:
-  - {{shortVersion}}
+  - {{version}}
 ---
 
-# Knot.x {{shortVersion}}
+# Knot.x {{version}}
+We are extremely pleased to announce that the Knot.x version {{version}} has been released.
 
 
 ## Release Notes
