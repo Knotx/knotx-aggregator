@@ -110,6 +110,20 @@ $>./pull-all.sh -r ../../ -b feature/my-changes -m origin/master
 $>./build-stack.sh -r projects/knotx
 ```
 
+## Pushing cross-repository changes
+You may want to use `development/push-all.sh` script to push changes that touches multiple Knot.x repositories.
+It requires [hub](https://hub.github.com/) installed.
+Before you run the script, configure `development/update-message.md` (see [hub docs](https://hub.github.com/hub-pull-request.1.html) for details).
+
+From `knotx-aggregator/development` run:
+```
+$>./push-all.sh -r projects/knotx -m "Cross-repo change #123"  -b feature/my-cross-repo-change
+```
+where
+- `projects/knotx` is a root folder path for all Knot.x repositories
+- `"Cross-repo change #123"` is a commit message for all changes that will be pushed
+- `feature/my-cross-repo-change` is the branch that will be used to create PR base and will be tracked
+
 # Release process
 Please refer to the [Releasing with Gradle](https://github.com/Knotx/knotx-aggregator/tree/master/release-gradle).
 
