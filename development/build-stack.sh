@@ -65,7 +65,7 @@ done
 #       Execute         #
 #########################
 cd ${ROOT}
-touch ${ROOT}/knotx-stack/.composite-enabled
+touch knotx-stack/.composite-enabled
 
 build knotx-stack
 publish knotx-stack $DEPLOY
