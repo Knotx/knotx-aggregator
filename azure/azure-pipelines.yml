@@ -47,12 +47,6 @@ steps:
     displayName: "Clone all repositories"
   - task: Gradle@2
     inputs:
-      gradleWrapperFile: '$(workspaceDir)/knotx-aggregator/release-gradle/gradlew'
-      workingDirectory: '$(workspaceDir)/knotx-aggregator/release-gradle'
-      tasks: 'build'
-    displayName: "Build release-gradle from Aggregator"
-  - task: Gradle@2
-    inputs:
       gradleWrapperFile: '$(workspaceDir)/knotx-stack/gradlew'
       workingDirectory: '$(workspaceDir)/knotx-stack'
       tasks: 'publish-local-all'
