@@ -34,8 +34,8 @@ steps:
     displayName: "Clone repositories"
   - task: Gradle@2
     inputs:
-      gradleWrapperFile: '$(workspaceDir)/knotx-aggregator/release-gradle/gradlew'
-      workingDirectory: '$(workspaceDir)/knotx-aggregator/release-gradle'
+      gradleWrapperFile: './release-gradle/gradlew'
+      workingDirectory: './release-gradle'
       tasks: 'build'
     displayName: "Build release-gradle"
   - task: CmdLine@2
