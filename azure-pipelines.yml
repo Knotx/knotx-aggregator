@@ -32,6 +32,12 @@ steps:
           ./pull-all.sh -r ../../$(workspaceDir) -b $(System.PullRequest.SourceBranch) -a
         fi
     displayName: "Clone repositories"
+  - task: Gradle@2
+    inputs:
+      gradleWrapperFile: './release-gradle/gradlew'
+      workingDirectory: './release-gradle'
+      tasks: 'build'
+    displayName: "Build release-gradle"
   - task: CmdLine@2
     inputs:
       script: |

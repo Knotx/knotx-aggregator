@@ -22,7 +22,7 @@ open class AggregateChangelogsTask : DefaultTask() {
     fun execute() {
         val properties = mapOf<String, Any?>(
                 "version" to version,
-                "releaseType" to version.substringAfterLast(".") == "0" ? "minor" : "patch",
+                "releaseType" to if (version.substringAfterLast(".") == "0") "minor" else "patch",
                 "releaseDate" to LocalDateTime.now(),
                 "repositories" to buildRepositoriesChangelogs()
         )
