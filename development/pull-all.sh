@@ -135,8 +135,10 @@ cd $ROOT
 
 for repo in "${repos[@]}"
 do
-  checkout $ORG $repo
+  checkout $ORG $repo &
 done
+
+wait
 
 echo "***************************************"
 echo "SUMMARY"
