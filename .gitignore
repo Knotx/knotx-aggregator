@@ -1,0 +1,36 @@
+# Repositories #
+###################
+knotx-dependencies/* 
+knotx/* 
+knotx-junit5/* 
+knotx-data-bridge/* 
+knotx-forms/* 
+knotx-template-engine/* 
+knotx-stack/*
+
+# Logs
+######################
+*.log
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+~*
+
+# Intellij           #
+######################
+.idea
+
+# Other              #
+######################
+*.iml
+*.iws
+*.ipr
+*.vlt
+*.vertx
