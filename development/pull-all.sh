@@ -42,7 +42,7 @@ checkout() {
 
   if [[ -d $GITHUB_REPO ]]; then
     if [[ $FORCE ]]; then
-      git --git-dir=$GITHUB_REPO/.git --work-tree=$GITHUB_REPO reset HEAD --hard
+      git --git-dir=$GITHUB_REPO/.git --work-tree=$GITHUB_REPO reset origin/HEAD --hard
     fi
     git --git-dir=$GITHUB_REPO/.git --work-tree=$GITHUB_REPO fetch
   else
