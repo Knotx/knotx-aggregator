@@ -42,5 +42,5 @@ steps:
     inputs:
       script: |
         cd development
-        ./build-stack.sh -r ../../$(workspaceDir) -i -s
+        ./build-stack.sh -r ../../$(workspaceDir) -i -s -a
     displayName: "Build Stack & Docker & Starter Kit"
