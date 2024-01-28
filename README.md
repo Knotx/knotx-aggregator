@@ -7,8 +7,8 @@ Below you will find instructions on how to setup local Knot.x developer's e envi
 
 ## Prerequisites
 Before proceeding make sure you have installed:
-- Java 8
-- Gradle 6+
+- Java 11
+- Gradle 7+
 - (optionally) Your favourite IDE - we will use IntelliJ for the purpose of these instructions
 - (optionally) Docker installed (if you intend to build Knot.x Docker images)
 
